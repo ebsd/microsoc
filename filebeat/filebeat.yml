@@ -1,0 +1,21 @@
+filebeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml # enable all modules (nginx, kafka, redis, etc)
+    reload.enabled: false
+
+
+filebeat.autodiscover: # auto-discover tagged docker container
+  providers:
+    - type: docker
+      hints.enabled: true
+
+setup:
+  kibana.host: "http://kibana:5601"
+  dashboards.enable: true
+
+
+output.elasticsearch:
+  hosts: 'https://es01:9200'
+  username: 'elastic'
+  password: 'changeme'
+  ssl.certificate_authorities: ["${path.config}/config/certs/ca/ca.crt"]
