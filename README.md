@@ -25,3 +25,8 @@ Tester l'IDS :
 ```
 $ curl http://testmynids.org/uid/index.html
 ```
+
+## zeek
+
+Configurer l'interface d'écoute dans zeek/confg/node.cfg
+

@@ -177,7 +177,6 @@ services:
     # disable strict permission checks
     command: ["--strict.perms=false"]
 
-
 volumes:
   certs:
     driver: local
