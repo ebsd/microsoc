@@ -18,7 +18,7 @@ services:
   suricata:
     build: suricata/
     container_name: suricata
-    image: suricata:v5
+    #image: suricata:v5
     network_mode: host
     environment:
       CONFIG: '-i wlp0s20f3'
@@ -169,11 +169,11 @@ services:
       - ./filebeat/modules.d/zeek.yml:/usr/share/filebeat/modules.d/zeek.yml
       - ./filebeat/modules.d/suricata.yml:/usr/share/filebeat/modules.d/suricata.yml
       - /var/run/docker.sock:/var/run/docker.sock
-# comment faire pour gérer le symlink entre les conteneur zeek et filebeat ?
-      - zeekdata:/usr/local/zeek/logs
-      - zeekdata:/usr/local/zeek/spool/zeek
       - certs:/usr/share/filebeat/config/certs
       - suricatadata:/var/log/suricata
+      # comment faire pour gérer le symlink entre les conteneur zeek et filebeat ?
+      - zeekdata:/usr/local/zeek/logs
+      - zeekdata:/usr/local/zeek/spool/zeek
     # disable strict permission checks
     command: ["--strict.perms=false"]
 
@@ -186,8 +186,7 @@ volumes:
     driver: local
   filebeatdata:
     driver: local
-  zeekdata:
-    driver: local
   suricatadata:
     driver: local
-
+  zeekdata:
+    driver: local

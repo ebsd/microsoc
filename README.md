@@ -10,7 +10,7 @@ Lire le fichier `.env` pour quelques configs.
 Le docker-compose.yml est basé sur :
 https://github.com/elastic/elasticsearch/blob/main/docs/reference/setup/install/docker/docker-compose.yml
 
-L'authorité de certification est partagée entre les différents conteneurs : elastic, kibana et filebeat.
+L'autorité de certification est partagée entre les différents conteneurs : elastic, kibana et filebeat.
 
 ## filebeat
 
@@ -29,4 +29,23 @@ $ curl http://testmynids.org/uid/index.html
 ## zeek
 
 Configurer l'interface d'écoute dans zeek/confg/node.cfg
+
+## TODO
+MISP
+
+Create the .env file:
+
+$ cp template.env .env
+
+Start the MISP containers.
+
+$ docker compose up -d
+
+When MISP containers finish starting, create a sync user for Elastic on MISP.
+
+Using MISP CLI:
+
+$ docker-compose exec misp-core app/Console/cake User create elastic@admin.test 5 1
+$ docker-compose exec misp-core app/Console/cake User change_authkey elastic@admin.test
+Old authentication keys disabled and new key created: 06sDmKQK3E6MSJwsOhYT3N4NzfTpe53ruV0Bydf0
 
