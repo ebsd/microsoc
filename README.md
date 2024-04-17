@@ -30,22 +30,38 @@ $ curl http://testmynids.org/uid/index.html
 
 Configurer l'interface d'écoute dans zeek/confg/node.cfg
 
-## TODO
-MISP
+## TODO MISP
 
-Create the .env file:
+> Source : https://www.misp-project.org/2024/04/05/elastic-misp-docker.html/
 
-$ cp template.env .env
+
+git clone https://github.com/MISP/misp-docker.git
 
 Start the MISP containers.
 
+$ cd misp-docker
+$ cp template.env .env
 $ docker compose up -d
 
-When MISP containers finish starting, create a sync user for Elastic on MISP.
+Quand le conteneur MISP a terminé son démarrage, créer un utilisateur MISP pour Elastic.
 
-Using MISP CLI:
+MISP CLI:
 
 $ docker-compose exec misp-core app/Console/cake User create elastic@admin.test 5 1
 $ docker-compose exec misp-core app/Console/cake User change_authkey elastic@admin.test
 Old authentication keys disabled and new key created: 06sDmKQK3E6MSJwsOhYT3N4NzfTpe53ruV0Bydf0
 
+Placer cette auth key dans le fichier docker-microsoc/.env
+MISP_ELASTIC_API_KEY=06sDmKQK3E6MSJwsOhYT3N4NzfTpe53ruV0Bydf0
+
+MISP est accessible sur https://localhost/
+User: admin@admin.test
+Password: admin
+
+Démarrer microsoc-docker : $ docker compose up -d
+
+Dans kibana > Security > Rules > Detection rules
+Cliquer "Add Elastic Rules"
+Rechercher "threat intel" et cocher les règles qui vous intéressent.
+Cliquer sur "Install selected"
+Revenir dans Kibana > Security > Rules > Detection rules et cliquer "Disabled rules" et activer les nouvelles règles.

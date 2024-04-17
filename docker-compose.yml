@@ -137,6 +137,8 @@ services:
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+      # ajouter votre propre encryption key de 32 caractères
+      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=a7a6311933d3503b89bc2dbc36572c33a6c10925682e591bffcab6911c06786d
     mem_limit: "2g"
     healthcheck:
       test:
@@ -168,6 +170,7 @@ services:
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
       - ./filebeat/modules.d/zeek.yml:/usr/share/filebeat/modules.d/zeek.yml
       - ./filebeat/modules.d/suricata.yml:/usr/share/filebeat/modules.d/suricata.yml
+      - ./filebeat/modules.d/threatintel.yml:/usr/share/filebeat/modules.d/threatintel.yml
       - /var/run/docker.sock:/var/run/docker.sock
       - certs:/usr/share/filebeat/config/certs
       - suricatadata:/var/log/suricata
