@@ -165,6 +165,8 @@ services:
       - ELASTICSEARCH_HOSTS=https://es01:9200
       - ELASTICSEARCH_USERNAME=elastic
       - ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD
+      - MISP_HOST=${MISP_HOST}
+      - MISP_ELASTIC_API_KEY=${MISP_ELASTIC_API_KEY}
     volumes:
       - filebeatdata:/usr/share/filebeat/data
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
@@ -193,3 +195,8 @@ volumes:
     driver: local
   zeekdata:
     driver: local
+
+#networks:
+#    microsoc:
+#      external: true
+#
