@@ -2,10 +2,9 @@
 
 Ceci est une stack elastic - kibana - filebeat - suricata - zeek.
 
+Elle peut être interfacée avec MISP (lire plus bas).
 
-
-
-Lire le fichier `.env` pour quelques configs.
+Lire le fichier `template.env` pour quelques configs. Il faudra le renommer en `.env` avant tout.
 
 ## elastic et kibana
 
@@ -28,7 +27,6 @@ Pour le fonctionnement avec MISP, le module threatintel.yml doit également êtr
 Concernant le module threatintel, il existe un bug eb 8.13.0, cf erreur : "cannot access method/field [size] from a null def reference". Passez en 8.13.3 dans .env.
 
 
-
 ## suricata
 
 Tester l'IDS : 
@@ -38,17 +36,18 @@ $ curl http://testmynids.org/uid/index.html
 
 ## zeek
 
-Configurer l'interface d'écoute dans zeek/confg/node.cfg
+Avant de démarrer, configurer l'interface d'écoute dans zeek/confg/node.cfg
 
-## MISP (à terminer)
+## misp
 
 > Source : https://www.misp-project.org/2024/04/05/elastic-misp-docker.html/
 
+Cloner le repo MISP :
 ```
 $ git clone https://github.com/MISP/misp-docker.git
 ```
 
-Start the MISP containers.
+Démarrer les conteneurs MISP.
 ```
 $ cd misp-docker
 $ cp template.env .env
@@ -73,6 +72,7 @@ Password: admin
 
 Démarrer microsoc-docker :
 ```
+$ cd docker-microsoc
 $ docker compose up -d
 ```
 Dans kibana > Security > Rules > Detection rules
@@ -81,7 +81,7 @@ Rechercher "threat intel" et cocher les règles qui vous intéressent.
 Cliquer sur "Install selected"
 Revenir dans Kibana > Security > Rules > Detection rules et cliquer "Disabled rules" et activer les nouvelles règles.
 
-### Tester
+### Tester la détection elastic sur les events misp
 
 1. Se rendre dans MISP et créer un event en lui affectant un attribut ip-dst.
 Category : network activity
