@@ -5,6 +5,9 @@ Ceci est une stack elastic - kibana - filebeat - suricata - zeek.
 Elle peut être interfacée avec MISP (lire plus bas).
 
 Lire le fichier `template.env` pour quelques configs. Il faudra le renommer en `.env` avant tout.
+```
+cp template.env .env
+```
 
 ## elastic et kibana
 
@@ -26,9 +29,9 @@ Les modules suricata et zeek de filebeat sont activés dans `filebeat/filebeat/m
 Pour le fonctionnement avec MISP, le module threatintel.yml doit également être activé.
 Concernant le module threatintel, il existe un bug eb 8.13.0, cf erreur : "cannot access method/field [size] from a null def reference". Passez en 8.13.3 dans .env.
 
-
 ## suricata
 
+Configurer l'interface d'écoute dans docker-compose.yml.
 Tester l'IDS : 
 ```
 $ curl http://testmynids.org/uid/index.html
@@ -36,7 +39,7 @@ $ curl http://testmynids.org/uid/index.html
 
 ## zeek
 
-Avant de démarrer, configurer l'interface d'écoute dans zeek/confg/node.cfg
+Avant de démarrer, configurer l'interface d'écoute dans zeek/config/node.cfg
 
 ## misp
 
@@ -54,7 +57,7 @@ $ cp template.env .env
 $ docker compose up -d
 ```
 
-Quand le conteneur MISP a terminé son démarrage, créer un utilisateur MISP pour Elastic.
+Quand le conteneur MISP a terminé son démarrage, créer un utilisateur MISP pour Filebeat.
 
 MISP CLI:
 ```
@@ -70,7 +73,7 @@ MISP est accessible sur https://localhost/
 User: admin@admin.test
 Password: admin
 
-Démarrer microsoc-docker :
+Après avoir configuré microSOC (interface d'écoute zeek et suricata), démarrer le :
 ```
 $ cd docker-microsoc
 $ docker compose up -d
