@@ -2,10 +2,7 @@
 
 Ceci est une stack elastic - kibana - filebeat - suricata - zeek.
 
-
-
-
-Lire le fichier `.env` pour quelques configs.
+Lire le fichier `.env` pour quelques configs et mots de passe.
 
 ## elastic et kibana
 
@@ -25,7 +22,7 @@ Les logs du conteneur Suricata sont partagés avec le conteneur Filebeat via un 
 Les modules suricata et zeek de filebeat sont activés dans `filebeat/filebeat/modules.d/suricata.yml et zeek.yml`.
 
 Pour le fonctionnement avec MISP, le module threatintel.yml doit également être activé.
-Concernant le module threatintel, il existe un bug eb 8.13.0, cf erreur : "cannot access method/field [size] from a null def reference". Passez en 8.13.3 dans .env.
+Concernant le module threatintel, il existe un bug eb 8.13.0, cf erreur : "cannot access method/field [size] from a null def reference". Passez en 8.13.3 mini dans .env.
 
 
 
@@ -48,10 +45,14 @@ Configurer l'interface d'écoute dans zeek/confg/node.cfg
 $ git clone https://github.com/MISP/misp-docker.git
 ```
 
-Start the MISP containers.
 ```
 $ cd misp-docker
 $ cp template.env .env
+```
+Et editér .env pour configurer le BASE_URL='https://<ip>'
+
+Démarrer le conteneur MISP
+```
 $ docker compose up -d
 ```
 
@@ -75,7 +76,7 @@ Démarrer microsoc-docker :
 ```
 $ docker compose up -d
 ```
-Dans kibana > Security > Rules > Detection rules
+Dans kibana (https://<ip>:5601/) > Security > Rules > Detection rules
 Cliquer "Add Elastic Rules"
 Rechercher "threat intel" et cocher les règles qui vous intéressent.
 Cliquer sur "Install selected"
@@ -83,12 +84,15 @@ Revenir dans Kibana > Security > Rules > Detection rules et cliquer "Disabled ru
 
 ### Tester
 
+Activer les workflows de MISP dans Administration > Server Settings and Maintenance > Plugin > Workflow. Configurer Plugin.Workflow_enable à true.
 1. Se rendre dans MISP et créer un event en lui affectant un attribut ip-dst.
+Menu add event
+Puis menu gauche Add Attribute
 Category : network activity
 Type: ip-dst
+Value: 185.194.93.14
 For intrusion detection system : cochée
 Bouton "submit"
-Value: 185.194.93.14
 
 2. Ajouter le tag workflow:state="complete" dans Event Action > Add Tag
 Puis affecter ce tag sur notre event

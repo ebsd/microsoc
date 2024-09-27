@@ -21,7 +21,7 @@ services:
     #image: suricata:v5
     network_mode: host
     environment:
-      CONFIG: '-i wlp0s20f3'
+      CONFIG: '-i  enp1s0'
     cap_add:
       - NET_ADMIN
       - SYS_NICE
