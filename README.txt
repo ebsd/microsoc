@@ -56,7 +56,6 @@ Intro
    filebeat dans :
       root@40a9f2825766:/usr/share/filebeat/logs
 
-
 3.  suricata
 
    Tester l'IDS : 
@@ -77,7 +76,7 @@ Intro
 
    Celle-ci a été placée dans zeek/config/local.zeek
 
-5.  MISP (à terminer)
+5.  MISP
 
 5.1.  Mise en service
 
