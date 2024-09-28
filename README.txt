@@ -1,6 +1,6 @@
 
-3r1c.net                                                      2024-09-28
-version 0.1                                                   2024-09-28
+ebsd                                                          2024-05-01
+version 0.2                                                   2024-09-28
 Information                                                       Public
 
 				MicroSOC
