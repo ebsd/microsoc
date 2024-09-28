@@ -9,4 +9,3 @@
     var.ssl.verification_mode: none
     var.filters:
       type: ["md5", "sha256", "sha512", "url", "uri", "ip-src", "ip-dst", "hostname", "domain"]
-      tags: ['workflow:state="complete"']
