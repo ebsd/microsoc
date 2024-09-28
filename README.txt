@@ -87,13 +87,27 @@ Intro
       $ cd misp-docker
       $ cp template.env .env
    
-   Et editer .env pour configurer le BASE_URL='https://<ip>'
+   Et editer .env pour configurer le BASE_URL='https://<ip>' qui devrait
+   correspondre à l'interface "externe" du dockerhost.
+
+   Sinon, il est également possible de modifier les services du
+   docker-compose.yml pour utiliser le même réseau que le conteneur
+   docker-microsoc :
+
+      service:
+        networks:
+          - docker-microsoc_default
+   
+      # et en fin de fichier
+      networks:
+	  docker-microsoc_default:
+	    external: true
 
    Démarrer le conteneur MISP
   `
       $ docker compose up -d
 
-   Quand le conteneur MISP a terminé son démarrage, créer un utilisateur
+   Quand le conteneur MISP a terminé son 1er démarrage, créer un utilisateur
    MISP pour Elastic.
 
    MISP CLI:
