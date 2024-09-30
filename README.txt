@@ -27,7 +27,7 @@ Intro
 
    Utilisateur / mot de passe par défaut :
 
-      elsatic/chageme
+      elsatic/changeme
 
 3.  filebeat
 
@@ -35,6 +35,7 @@ Intro
 
    Les logs du conteneur Suricata sont partagés avec le conteneur
    Filebeat via un volume :
+
       suricatadata:/var/log/suricata
 
 2.1.  Modules filebeat
@@ -45,15 +46,27 @@ Intro
 2.2.  Interface Elastic / MISP
 
    Pour le fonctionnement avec MISP, le module threatintel.yml doit
-   également être activé.
-   Modifier ce fichier en fonction des besoins.
+   également être activé. La configuration se situe dans :
+
+      filebeat/modules.d/threatintel.yml
+
+   Modifier ce fichier en fonction des besoins. On peut par exemple
+   ajouter un filtre sur les events à sélectionner :
+
+      var.filters:
+        type: ["md5", "sha256", "sha512", "url", "uri", "ip-src", "ip-dst", "hostname", "domain"]
+        tags: ['workflow:state="complete"']
+
+   Concernant le filtre sur le tag "workflow:state", il faudra que ce
+   tag soit créé dans MIPS (lire plus bas).
+
    Concernant le module threatintel, il existe un bug eb 8.13.0, cf
    erreur : "cannot access method/field [size] from a null def
    reference". Passez en 8.13.3 mini dans .env.
 
-
    Pour debuguer la connexion filebeat / MIPS, entrer dans le contenant
    filebeat dans :
+
       root@40a9f2825766:/usr/share/filebeat/logs
 
 3.  suricata
@@ -120,6 +133,7 @@ Intro
       MISP_ELASTIC_API_KEY=06sDmKQK3E6MSJwsOhYT3N4NzfTpe53ruV0Bydf0
 
    MISP est accessible sur https://<ip>/
+
       User: admin@admin.test
       Password: admin
 
