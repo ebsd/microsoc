@@ -10,8 +10,10 @@ services:
       - net_raw
       - net_admin
     network_mode: host
+    restart: unless-stopped
     volumes:
       - ./zeek/config/node.cfg:/usr/local/zeek/etc/node.cfg
+      - ./zeek/config/local.zeek:/usr/local/zeek/share/zeek/site/local.zeek
       - zeekdata:/usr/local/zeek/logs
       - zeekdata:/usr/local/zeek/spool/zeek
 
@@ -83,6 +85,7 @@ services:
       setup:
         condition: service_healthy
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    restart: unless-stopped
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
         #- esdata01:/var/lib/elasticsearch/data
@@ -107,7 +110,7 @@ services:
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
         #      - xpack.license.self_generated.type=${LICENSE}
-    mem_limit: "1g"
+    mem_limit: "2g"
     ulimits:
       memlock:
         soft: -1
@@ -128,6 +131,7 @@ services:
         condition: service_healthy
     image: docker.elastic.co/kibana/kibana:$STACK_VERSION
     container_name: kibana
+    restart: unless-stopped
     volumes:
       - certs:/usr/share/kibana/config/certs
       - kibanadata:/usr/share/kibana/data
@@ -167,6 +171,7 @@ services:
       - ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD
       - MISP_HOST=${MISP_HOST}
       - MISP_ELASTIC_API_KEY=${MISP_ELASTIC_API_KEY}
+    restart: unless-stopped
     volumes:
       - filebeatdata:/usr/share/filebeat/data
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
