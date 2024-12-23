@@ -29,7 +29,7 @@ Intro
    Lire le fichier `.env` pour quelques configs et mots de passe.
    Configurer l'adresse IP du serveur MISP dans MIPS_HOST=<ip>
 
-2.   elastic et kibana
+2.  elastic et kibana
 
    Le docker-compose.yml est basé sur :
    https://github.com/elastic/elasticsearch/blob/main/docs/reference/setup/install/docker/docker-compose.yml
@@ -85,6 +85,12 @@ Intro
 
    Tester l'IDS : 
       $ curl http://testmynids.org/uid/index.html
+
+   En cas de modification du Dockerfile, il faudra rebuilder le conte-
+   neur :
+      $ docker compose up -d --build suricata
+
+   La désactivation de règles se fait via le fichier disable.conf
 
 4.  zeek
 

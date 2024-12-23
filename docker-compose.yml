@@ -2,7 +2,9 @@
 # https://github.com/activecm/docker-zeek/blob/master/docker-entrypoint.sh
 version: '3.2'
 
+
 services:
+
   zeek:
     container_name: zeek
     build: ./zeek/

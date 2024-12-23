@@ -10,9 +10,12 @@ RUN apk add python3 py3-pip
 #RUN . /python3/suricata-venv/bin/activate
 RUN python3 -m pip install suricata-update  --break-system-packages
 COPY suricata-update.sh /etc/suricata/suricata-update.sh
+RUN chmod +x /etc/suricata/suricata-update.sh
 # COPY file needed for the Suricata efficiency
 COPY suricata-update-cron /etc/crontabs/suricata-update-cron
 RUN chmod +x /etc/crontabs/suricata-update-cron
+# COPY disabled rules file
+COPY disable.conf /etc/suricata/disable.conf
 COPY docker-entrypoint.sh /tmp/docker-entrypoint.sh
 RUN chmod +x /tmp/docker-entrypoint.sh
 #COPY suricata.yaml /etc/suricata/suricata.yaml
