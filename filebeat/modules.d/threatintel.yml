@@ -20,7 +20,8 @@
     enabled: true
     var.input: httpjson
     var.url: https://otx.alienvault.com/api/v1/indicators/export
-    var.api_token: {$OTX_API_KEY}
+    var.types: "domain,IPv4,hostname,url"
+    var.api_token: "{$OTX_API_KEY}"
     var.first_interval: 240h
     var.lookback_range: 2h
     var.interval: 60m
