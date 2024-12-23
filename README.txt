@@ -6,13 +6,21 @@ Information                                                       Public
 Intro
 
    Ceci est une stack elastic - kibana - filebeat - suricata - zeek.
+
    En complément, comme décrit plus bas, MIPS peut être intégré afin de
    générer des altertes via des règles Kibana quand un ioc de MIPS est
    catché par Zeek.
 
-					+-----------+
-					|           |
-		+------+  +----------+  |  Elastic  |
+   Misp, AbuseCH et OTX sont intégrés grâce au module "Threatintel" de
+   filebeat.
+
+                 +---------+  +-----+
+                 | AbuseCH |  | OTX |
+                 +-------+-+  +---+-+
+                         |        |
+			 +--+     |     +-----------+
+			    |     |     |           |
+		+------+  +-v-----v--+  |  Elastic  |
 		| MISP +->| Filebeat +->|  Kibana   |
 		+------+  +----------+  |           |
 			     ^     ^    +-----------+
@@ -24,8 +32,9 @@ Intro
 
 1.  Configurations
 
-   Lire le fichier `template.env` pour quelques configs et mots de passe.
-   Configurer l'adresse IP du serveur MISP dans MIPS_HOST=<ip>
+   Lire le fichier `template.env` pour quelques configs et comptes.
+   Configurer l'adresse IP du serveur MISP dans MIPS_HOST=<ip>, si
+   vous l'utilisez.
 
    Renommer template.env en .env
 
@@ -74,17 +83,18 @@ Intro
    ajouter un filtre sur les events à sélectionner :
 
       var.filters:
-        type: ["md5", "sha256", "sha512", "url", "uri", "ip-src", "ip-dst", "hostname", "domain"]
+        type: ["md5", "sha256", "sha512", "url", "uri", "ip-src", \
+        "ip-dst", "hostname", "domain"]
         tags: ['workflow:state="complete"']
 
    Concernant le filtre sur le tag "workflow:state", il faudra que ce
    tag soit créé dans MIPS (lire plus bas).
 
-   Concernant le module threatintel, il existe un bug eb 8.13.0, cf
+   Concernant le module threatintel, il existe un bug en v8.13.0, cf
    erreur : "cannot access method/field [size] from a null def
-   reference". Passez en 8.13.3 mini dans .env.
+   reference". Passez la stack elastic en 8.13.3 mini dans .env.
 
-   Pour debuguer la connexion filebeat / MIPS, entrer dans le contenant
+   Pour debuguer la connexion filebeat / MIPS, entrer dans le conteneur
    filebeat dans :
 
       root@40a9f2825766:/usr/share/filebeat/logs
@@ -106,6 +116,9 @@ Intro
    Configurer votre API KEY OTX dans le fichier .env.
 
    Pour obtenir une clé api OTX se rendre sur [1].
+
+   NOTES
+   Quelques problèmes actuellement, OTX désactivés.
          
 3.  suricata
 
@@ -125,8 +138,8 @@ Intro
    Au sein du conteneur, le dossier d'installation de zeek est :
       /usr/local/zeek
 
-   Notons que les logs doivent être au format json avant d'être transmis à 
-   filebeat. Ceci se configure ici :
+   Notons que les logs doivent être au format json avant d'être transmis
+   à filebeat. Ceci se configure ici :
       /usr/local/zeek/share/zeek/site/local.zeek
 
    Avec cette directive :
@@ -139,7 +152,8 @@ Intro
 
 5.1.  Mise en service
 
-   Source : https://www.misp-project.org/2024/04/05/elastic-misp-docker.html/
+   Source : https://www.misp-project.org/2024/04/05/\
+   elastic-misp-docker.html/
 
       $ git clone https://github.com/MISP/misp-docker.git
       $ cd misp-docker
@@ -162,19 +176,21 @@ Intro
 	    external: true
 
    Démarrer le conteneur MISP
-  `
+  
       $ docker compose up -d
 
-   Quand le conteneur MISP a terminé son 1er démarrage, créer un utilisateur
-   MISP pour Elastic.
+   Quand le conteneur MISP a terminé son 1er démarrage, créer un utili-
+   sateur MISP pour Elastic.
 
    MISP CLI:
    
-   $ docker-compose exec misp-core app/Console/cake User create elastic@admin.test 5 1
-   $ docker-compose exec misp-core app/Console/cake User change_authkey elastic@admin.test
-   Old authentication keys disabled and new key created: 06sDmKQK3E6MSJwsOhYT3N4NzfTpe53ruV0Bydf0
-  `
-
+   $ docker-compose exec misp-core app/Console/cake \
+   User create elastic@admin.test 5 1
+   $ docker-compose exec misp-core app/Console/cake \
+   User change_authkey elastic@admin.test
+   Old authentication keys disabled and new key created: 
+   06sDmKQK3E6MSJwsOhYT3N4NzfTpe53ruV0Bydf0
+  
    Placer cette auth key dans le fichier microsoc-docker/.env
       MISP_ELASTIC_API_KEY=06sDmKQK3E6MSJwsOhYT3N4NzfTpe53ruV0Bydf0
 
@@ -202,26 +218,26 @@ Intro
 
 5.3.  Ajouter un indicateur de compromission dans MISP
 
-   - Se rendre dans MISP et créer un event en lui affectant un attribut ip-dst.
-   Menu add event
-   Puis menu gauche Add Attribute
-   Category : network activity
-   Type: ip-dst
-   Value: 185.194.93.14
-   For intrusion detection system : cochée
-   Bouton "submit"
+   - Se rendre dans MISP et créer un event en lui affectant un attribut 
+   ip-dst.
+      Menu add event
+      Puis menu gauche Add Attribute
+      Category : network activity
+      Type: ip-dst
+      Value: 185.194.93.14
+      For intrusion detection system : cochée
+      Bouton "submit"
 
    - Ajouter le tag workflow:state="complete" dans Event Action > Add Tag
-   Puis affecter ce tag sur notre event
+      Puis affecter ce tag sur notre event
 
    - Filebeat va insérer cette IP dans le champ : threat.indicator.ip
 
    - Depuis un hôte monitoré par Zeek :
-   
       $ curl -I https://circl.lu
-  
 
-   - Dans Kibana > Security > Alerts on obtient une alerte conernant l'accès à l'IP malveillante.
+   - Dans Kibana > Security > Alerts on obtient une alerte conernant
+   l'accès à l'IP malveillante.
    Par defaut cette règle de détection s'active toute les heures.
 
 -----------------------------------------------------------------------
