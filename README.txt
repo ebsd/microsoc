@@ -1,8 +1,6 @@
 
-ebsd                                                          2024-05-01
-version 0.3                                                   2024-10-06
+version 0.4                                                   2024-12-23
 Information                                                       Public
-
 				MicroSOC
 
 Intro
@@ -32,7 +30,8 @@ Intro
 2.  elastic et kibana
 
    Le docker-compose.yml est basé sur :
-   https://github.com/elastic/elasticsearch/blob/main/docs/reference/setup/install/docker/docker-compose.yml
+   https://github.com/elastic/elasticsearch/blob/main/docs/reference\
+   /setup/install/docker/docker-compose.yml
 
    L'autorité de certification est partagée entre les différents
    conteneurs : elastic, kibana et filebeat.
@@ -87,10 +86,21 @@ Intro
    ABUSE URL
    =========
 
-   Le module abuse url est activé dans ;
+   Le module abuse url est activé dans :
 
       filebeat/modules.d/threatintel.yml
-      
+
+   OTX
+   ===
+
+   Le module abuse url est activé dans :
+
+      filebeat/modules.d/threatintel.yml
+
+   Configurer votre API KEY OTX dans le fichier .env.
+
+   Pour obtenir une clé api OTX se rendre sur [1].
+         
 3.  suricata
 
    Tester l'IDS : 
@@ -208,3 +218,6 @@ Intro
    - Dans Kibana > Security > Alerts on obtient une alerte conernant l'accès à l'IP malveillante.
    Par defaut cette règle de détection s'active toute les heures.
 
+-----------------------------------------------------------------------
+Références
+   [1]  https://otx.alienvault.com/api

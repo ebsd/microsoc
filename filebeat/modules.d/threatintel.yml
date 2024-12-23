@@ -15,3 +15,12 @@
     var.input: httpjson
     var.url: https://urlhaus-api.abuse.ch/v1/urls/recent/
     var.interval: 60m
+
+  otx:
+    enabled: true
+    var.input: httpjson
+    var.url: https://otx.alienvault.com/api/v1/indicators/export
+    var.api_token: {$OTX_API_KEY}
+    var.first_interval: 240h
+    var.lookback_range: 2h
+    var.interval: 60m
