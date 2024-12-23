@@ -24,8 +24,10 @@ Intro
 
 1.  Configurations
 
-   Lire le fichier `.env` pour quelques configs et mots de passe.
+   Lire le fichier `template.env` pour quelques configs et mots de passe.
    Configurer l'adresse IP du serveur MISP dans MIPS_HOST=<ip>
+
+   Renommer template.env en .env
 
 2.  elastic et kibana
 
@@ -44,17 +46,21 @@ Intro
 
    Le fichier `filebeat/filebat.yml` doit être possédé par root.
 
+2.1.  Modules Suricata et Zeek
+
    Les logs du conteneur Suricata sont partagés avec le conteneur
    Filebeat via un volume :
 
       suricatadata:/var/log/suricata
 
-2.1.  Modules Suricata et Zeek
-
    Les modules suricata et zeek de filebeat sont activés dans
    `filebeat/filebeat/modules.d/suricata.yml et zeek.yml`.
 
 2.2. Module Threatintel
+
+   Le module threatintel "map" les informations dans les mêmes champs
+   destination.ip, source.ip, etc... quelque soit le type de threat
+   intel (misp, otx, abuse...).
 
    MISP
    ====
