@@ -50,12 +50,15 @@ Intro
 
       suricatadata:/var/log/suricata
 
-2.1.  Modules filebeat
+2.1.  Modules Suricata et Zeek
 
    Les modules suricata et zeek de filebeat sont activés dans
    `filebeat/filebeat/modules.d/suricata.yml et zeek.yml`.
 
-2.2.  Interface Elastic / MISP
+2.2. Module Threatintel
+
+   MISP
+   ====
 
    Pour le fonctionnement avec MISP, le module threatintel.yml doit
    également être activé. La configuration se situe dans :
@@ -81,6 +84,13 @@ Intro
 
       root@40a9f2825766:/usr/share/filebeat/logs
 
+   ABUSE URL
+   =========
+
+   Le module abuse url est activé dans ;
+
+      filebeat/modules.d/threatintel.yml
+      
 3.  suricata
 
    Tester l'IDS : 
@@ -96,9 +106,11 @@ Intro
 
    Configurer l'interface d'écoute dans zeek/config/node.cfg
 
+   Au sein du conteneur, le dossier d'installation de zeek est :
+      /usr/local/zeek
+
    Notons que les logs doivent être au format json avant d'être transmis à 
    filebeat. Ceci se configure ici :
-
       /usr/local/zeek/share/zeek/site/local.zeek
 
    Avec cette directive :

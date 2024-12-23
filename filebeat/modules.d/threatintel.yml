@@ -9,3 +9,9 @@
     var.ssl.verification_mode: none
     var.filters:
       type: ["md5", "sha256", "sha512", "url", "uri", "ip-src", "ip-dst", "hostname", "domain"]
+
+  abuseurl:
+    enabled: true
+    var.input: httpjson
+    var.url: https://urlhaus-api.abuse.ch/v1/urls/recent/
+    var.interval: 60m
