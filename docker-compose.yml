@@ -6,6 +6,7 @@ version: '3.2'
 services:
 
   zeek:
+    hostname: zeek
     container_name: zeek
     build: ./zeek/
     cap_add:
@@ -21,6 +22,7 @@ services:
 
   suricata:
     build: suricata/
+    hostname: suricata
     container_name: suricata
     #image: suricata:v5
     network_mode: host
@@ -83,6 +85,8 @@ services:
       retries: 120
 
   es01:
+    hostname: es01
+    container_name: es01
     depends_on:
       setup:
         condition: service_healthy
@@ -132,6 +136,7 @@ services:
       es01:
         condition: service_healthy
     image: docker.elastic.co/kibana/kibana:$STACK_VERSION
+    hostname: kibana
     container_name: kibana
     restart: unless-stopped
     volumes:
@@ -166,6 +171,7 @@ services:
       kibana: 
         condition: service_healthy
     image: docker.elastic.co/beats/filebeat:$STACK_VERSION
+    hostname: filebeat
     container_name: filebeat
     environment:
       - ELASTICSEARCH_HOSTS=https://es01:9200
