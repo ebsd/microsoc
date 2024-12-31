@@ -4,7 +4,7 @@
     var.input: httpjson
     var.url: "https://${MISP_HOST}/events/restSearch"
     var.api_token: "${MISP_ELASTIC_API_KEY}"
-    var.first_interval: 240h
+    var.first_interval: 720h
     var.interval: 5m
     var.ssl.verification_mode: none
     var.filters:

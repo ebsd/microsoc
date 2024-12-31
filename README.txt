@@ -228,7 +228,8 @@ Intro
       For intrusion detection system : cochée
       Bouton "submit"
 
-   - Ajouter le tag workflow:state="complete" dans Event Action > Add Tag
+   - Optionnel : Ajouter le tag workflow:state="complete" dans Event 
+   Action > Add Tag
       Puis affecter ce tag sur notre event
 
    - Filebeat va insérer cette IP dans le champ : threat.indicator.ip
@@ -236,9 +237,12 @@ Intro
    - Depuis un hôte monitoré par Zeek :
       $ curl -I https://circl.lu
 
-   - Dans Kibana > Security > Alerts on obtient une alerte conernant
+   - Dans Kibana > Security > Alerts on obtient une alerte concernant
    l'accès à l'IP malveillante.
    Par defaut cette règle de détection s'active toute les heures.
+
+   La configuration de MISP se fait dans le module threat intel de
+   filebeat : filebeat/modules.d/threatintel.yml
 
 -----------------------------------------------------------------------
 Références
