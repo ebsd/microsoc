@@ -88,7 +88,8 @@ Intro
         tags: ['workflow:state="complete"']
 
    Concernant le filtre sur le tag "workflow:state", il faudra que ce
-   tag soit créé dans MIPS (lire plus bas).
+   tag soit créé dans MIPS (lire plus bas). On peut tout à fait s'en
+   passer.
 
    Concernant le module threatintel, il existe un bug en v8.13.0, cf
    erreur : "cannot access method/field [size] from a null def
@@ -243,6 +244,16 @@ Intro
 
    La configuration de MISP se fait dans le module threat intel de
    filebeat : filebeat/modules.d/threatintel.yml
+
+5.4.  Feeds
+
+   Activer vos feeds.
+   Il semblerait q'il existe un problème avec les mises à jour automati-
+   que des feeds.
+   Je teste actuellement ce cron pour contourner l'absence de mise à
+   jour automatique des feeds.
+ 
+      00 6 * * * curl -k https://192.168.1.10/feeds/fetchFromAllFeeds
 
 -----------------------------------------------------------------------
 Références
