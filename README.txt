@@ -1,5 +1,5 @@
 
-version 0.4                                                   2024-12-23
+version 0.4                                                   2025-01-01
 Information                                                       Public
 				MicroSOC
 
@@ -15,8 +15,8 @@ Intro
    filebeat.
 
                  +---------+  +-----+
-                 | AbuseCH |  | OTX |
-                 +-------+-+  +---+-+
+   ThreatIntel   | AbuseCH |  | OTX |
+   sources -->   +-------+-+  +---+-+
                          |        |
 			 +--+     |     +-----------+
 			    |     |     |           |
@@ -55,7 +55,7 @@ Intro
 
    Le fichier `filebeat/filebat.yml` doit être possédé par root.
 
-2.1.  Modules Suricata et Zeek
+3.1.  Modules Suricata et Zeek
 
    Les logs du conteneur Suricata sont partagés avec le conteneur
    Filebeat via un volume :
@@ -65,7 +65,7 @@ Intro
    Les modules suricata et zeek de filebeat sont activés dans
    `filebeat/filebeat/modules.d/suricata.yml et zeek.yml`.
 
-2.2. Module Threatintel
+3.2. Module Threatintel
 
    Le module threatintel "map" les informations dans les mêmes champs
    destination.ip, source.ip, etc... quelque soit le type de threat
@@ -121,7 +121,7 @@ Intro
    NOTES
    Quelques problèmes actuellement, OTX désactivés.
          
-3.  suricata
+4.  suricata
 
    Tester l'IDS : 
       $ curl http://testmynids.org/uid/index.html
@@ -132,7 +132,7 @@ Intro
 
    La désactivation de règles se fait via le fichier disable.conf
 
-4.  zeek
+5.  zeek
 
    Configurer l'interface d'écoute dans zeek/config/node.cfg
 
@@ -149,9 +149,9 @@ Intro
 
    Celle-ci a été placée dans zeek/config/local.zeek
 
-5.  MISP
+6.  MISP
 
-5.1.  Mise en service
+6.1.  Mise en service
 
    Source : https://www.misp-project.org/2024/04/05/\
    elastic-misp-docker.html/
@@ -204,7 +204,7 @@ Intro
    
       $ docker compose up -d
 
-5.2.  Configurer une règle de détection
+6.2.  Configurer une règle de détection
 
    Dans kibana (https://<ip>:5601/) > Security > Rules > Detection rules
    
@@ -217,7 +217,7 @@ Intro
    Revenir dans Kibana > Security > Rules > Detection rules et cliquer
    "Disabled rules" et activer les nouvelles règles.
 
-5.3.  Ajouter un indicateur de compromission dans MISP
+6.3.  Ajouter un indicateur de compromission dans MISP
 
    - Se rendre dans MISP et créer un event en lui affectant un attribut 
    ip-dst.
@@ -245,9 +245,24 @@ Intro
    La configuration de MISP se fait dans le module threat intel de
    filebeat : filebeat/modules.d/threatintel.yml
 
-5.4.  Feeds
+6.4.  Feeds
 
-   Activer vos feeds.
+   MISP est livré avec des feeds par défaut. Activez ceux qui vous conv-
+   iennent le mieux. Menu "Sync Actions > Feeds".
+
+   FEED PERSO
+
+   Il est également possible d'ajouter un feed perso, par exemple une
+   liste d'adresses IP au format texte. Menu "Sync Actions > Feeds > Add
+   Feed". Cocher la case "Enabled", fournir l'URL du fichier texte, sé-
+   lectionner une source de type "CSV", indiquer un Target Event de type
+   "Fixed Event", indiquer 1 seul champ dans "Value fields in the CSV".
+   Sélectionner enfin "auto publish" et "delta merge". Ne pas cocher
+   "Override IDS flag" sinon les adresses ne seront pas remontées par le
+   module ThreatIntel de Filebeat.
+
+   MISES A JOUR DES FEEDS
+
    Il semblerait q'il existe un problème avec les mises à jour automati-
    que des feeds.
    Je teste actuellement ce cron pour contourner l'absence de mise à
