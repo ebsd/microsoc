@@ -253,7 +253,9 @@ Intro
    Je teste actuellement ce cron pour contourner l'absence de mise à
    jour automatique des feeds.
  
-      00 6 * * * curl -k https://192.168.1.10/feeds/fetchFromAllFeeds
+      00 6 * * *  curl -k --header "Authorization: <APIKEY>" --header\
+      "Accept: application/json" --header "Content-Type: \
+      application/json" https://192.168.1.10/feeds/fetchFromAllFeeds
 
 -----------------------------------------------------------------------
 Références
