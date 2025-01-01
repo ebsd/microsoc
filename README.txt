@@ -116,7 +116,6 @@ Intro
       filebeat/modules.d/threatintel.yml
 
    Configurer votre API KEY OTX dans le fichier .env.
-
    Pour obtenir une clé api OTX se rendre sur [1].
 
    NOTES
@@ -232,7 +231,7 @@ Intro
    - Depuis un hôte monitoré par Zeek :
       $ curl -I https://circl.lu
 
-   - Dans Kibana > Security > Alerts on obtient une alerte concernant
+   - Dans Kibana > Security > Alerts on obtient une alerte suite à
    l'accès à l'IP malveillante.
    Par defaut cette règle de détection s'active toute les heures.
 
@@ -248,23 +247,26 @@ Intro
 
    Il est également possible d'ajouter un feed perso, par exemple une
    liste d'adresses IP au format texte. Menu "Sync Actions > Feeds > Add
-   Feed". Cocher la case "Enabled", fournir l'URL du fichier texte, sé-
-   lectionner une source de type "CSV", indiquer un Target Event de type
-   "Fixed Event", indiquer 1 seul champ dans "Value fields in the CSV".
-   Sélectionner enfin "auto publish" et "delta merge". Ne pas cocher
-   "Override IDS flag" sinon les adresses ne seront pas remontées par le
-   module ThreatIntel de Filebeat.
+   Feed".
+      - Cocher la case "Enabled",
+      - fournir l'URL du fichier texte,
+      - sélectionner une source de type "CSV",
+      -  indiquer un Target Event de type "Fixed Event",
+      -  indiquer 1 seul champ dans "Value fields in the CSV".
+      -  Sélectionner enfin "auto publish" et "delta merge".
+   Ne pas cocher "Override IDS flag" sinon les adresses ip ne seront pas
+   remontées par le module ThreatIntel de Filebeat.
 
    MISES A JOUR DES FEEDS
 
    Il semblerait q'il existe un problème avec les mises à jour automati-
    que des feeds.
-   Je teste actuellement ce cron pour contourner l'absence de mise à
-   jour automatique des feeds.
+   Il convient d'utiliser l'API via un cron pour mettre à jour des feeds.
  
-      00 6 * * *  curl -k --header "Authorization: <APIKEY>" --header\
-      "Accept: application/json" --header "Content-Type: \
-      application/json" https://192.168.1.10/feeds/fetchFromAllFeeds
+      00 6 * * *  curl -k --header "Authorization: <APIKEY>" \
+      --header "Accept: application/json" \
+      --header "Content-Type: application/json" \
+      https://192.168.1.10/feeds/fetchFromAllFeeds
 
 -----------------------------------------------------------------------
 Références
