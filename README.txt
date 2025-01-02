@@ -268,6 +268,11 @@ Intro
       --header "Content-Type: application/json" \
       https://192.168.1.10/feeds/fetchFromAllFeeds
 
+6.5.  Debug
+
+   Les logs dans le conteneurs sont situés dans :
+      /var/www/MISP/app/tmp/logs
+
 -----------------------------------------------------------------------
 Références
    [1]  https://otx.alienvault.com/api
